@@ -1,0 +1,290 @@
+/* Reset default margins/padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body & HTML must fill viewport */
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;    /* Prevent scrolling */
+  font-family: "Segoe UI", Roboto, sans-serif;
+  color: #ffffff;
+  background: #000000;
+}
+
+/* Background container: sits behind everything */
+#background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* Video: make it cover the entire screen */
+#bg-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: auto;
+  height: 120%;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  filter: brightness(0.6);  /* dim slightly for overlay text contrast */
+}
+
+/* Overlay container: sits on top, holds clock + controls */
+#overlay-container {
+  position: fixed;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* allow controls to override where needed */
+  top: 0;
+  left: 0;
+}
+
+/* Header (logo + quote) */
+#overlay-header {
+  width: 100%;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: auto; /* Allow interactions with header elements */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10; /* Ensure it's above other elements */
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  pointer-events: auto !important; /* Force enable pointer events */
+  flex-direction: row-reverse; /* Reverse the order to match the HTML structure */
+}
+
+#overlay-header .logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  pointer-events: auto;
+}
+
+.logo-byline {
+  font-size: 0.9rem;
+  font-weight: normal;
+  margin-top: -0.2rem;
+  letter-spacing: 0.05rem;
+  opacity: 0.9;
+}
+
+#overlay-header .greeting {
+  font-size: 1rem;
+  font-style: italic;
+  pointer-events: none;
+  margin-right: 0.5rem; /* Add some spacing between the greeting and the toggle button */
+}
+
+/* Time format toggle button */
+.format-toggle {
+  background: rgba(30, 60, 100, 0.6);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.8rem;
+  cursor: pointer !important;
+  transition: background 0.2s, transform 0.1s;
+  pointer-events: auto !important; /* Force enable pointer events */
+  z-index: 20; /* Higher z-index to ensure it's clickable */
+  position: relative; /* Establish a stacking context */
+  margin-left: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.format-toggle:hover {
+  background: rgba(60, 100, 150, 0.7);
+  transform: scale(1.05);
+}
+
+.format-toggle.active {
+  background: rgba(80, 120, 170, 0.8);
+  box-shadow: 0 0 10px rgba(100, 150, 255, 0.5);
+}
+
+/* Center content: greeting line + large clock */
+#center-content {
+  text-align: center;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+
+#greeting-line {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+  font-weight: 300;
+}
+
+#clock {
+  font-size: 12rem;
+  font-weight: 300;
+  letter-spacing: 0.05rem;
+  opacity: 0.95;
+  line-height: 1;
+}
+
+/* Control bar (bottom) */
+#control-bar {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  pointer-events: auto; /* allow clicking on controls */
+  transition: opacity 0.5s;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: rgba(10, 20, 40, 0.3);
+  backdrop-filter: blur(5px);
+}
+
+/* Generic button styling */
+.ctrl-btn {
+  background: rgba(30, 60, 100, 0.6);
+  border: none;
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.ctrl-btn:hover {
+  background: rgba(60, 100, 150, 0.7);
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(100, 150, 255, 0.5);
+}
+
+.ctrl-btn.active {
+  background: rgba(80, 120, 170, 0.8);
+  box-shadow: 0 0 20px rgba(100, 150, 255, 0.7);
+  transform: scale(1.05);
+}
+
+.ctrl-btn .icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+/* Volume slider styling */
+#volumeSlider {
+  width: 60px;
+  accent-color: #7afcff;
+  margin: 0 0.3rem;
+}
+
+#fullscreenBtn {
+  background: rgba(30, 60, 100, 0.6);
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#fullscreenBtn:hover {
+  background: rgba(60, 100, 150, 0.7);
+}
+
+/* Fade-out animation for background switching */
+#bg-video.fade-out {
+  animation: fadeOut 0.2s forwards;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* Clock animation for minute changes */
+@keyframes popScale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+#clock.pop-animate {
+  animation: popScale 0.3s ease-in-out;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  #clock {
+    font-size: clamp(3rem, 15vw, 6rem);
+  }
+  
+  #control-bar {
+    flex-wrap: wrap;
+  }
+}
+
+/* Format toggle in control bar */
+#timeFormatToggle {
+  background: rgba(30, 60, 100, 0.6);
+  border: none;
+  color: #fff;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+  display: flex;
+  align-items: center;
+  margin-left: 0.5rem;
+}
+
+#timeFormatToggle:hover {
+  background: rgba(60, 100, 150, 0.7);
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(100, 150, 255, 0.5);
+}
+
+#timeFormatToggle.active {
+  background: rgba(80, 120, 170, 0.8);
+  box-shadow: 0 0 20px rgba(100, 150, 255, 0.7);
+} 
