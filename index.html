@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Focus - Stay Productive</title>
+  
+  <!-- Resource hints for faster loading -->
+  <link rel="preload" href="assets/sounds/rain.mp3" as="audio" crossorigin="anonymous" />
+  <link rel="preload" href="assets/sounds/ocean.mp3" as="audio" crossorigin="anonymous" />
+  <link rel="preload" href="assets/sounds/piano.mp3" as="audio" crossorigin="anonymous" />
+  <link rel="preload" href="assets/sounds/bird.mp3" as="audio" crossorigin="anonymous" />
+  
+  <!-- Favicon suppression -->
+  <script>
+    // This prevents browsers from automatically requesting favicon.ico
+    const suppressFavicon = document.createElement('link');
+    suppressFavicon.rel = 'icon';
+    suppressFavicon.href = 'data:,'; // Empty favicon
+    document.head.appendChild(suppressFavicon);
+  </script>
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css" />
+  
+  <!-- Howler.js for audio handling -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.core.min.js"></script>
+  
+  <!-- Load format toggle script first -->
+  <script src="js/format-toggle.js?v=1.1"></script>
+</head>
+<body>
+  <!-- Hidden audio elements for autoplay -->
+  <audio id="rain-audio" src="assets/sounds/rain.mp3" preload="auto" loop style="display:none;"></audio>
+  <audio id="ocean-audio" src="assets/sounds/ocean.mp3" preload="auto" loop style="display:none;"></audio>
+  <audio id="piano-audio" src="assets/sounds/piano.mp3" preload="auto" loop style="display:none;"></audio>
+  <audio id="bird-audio" src="assets/sounds/bird.mp3" preload="auto" loop style="display:none;"></audio>
+  
+  <!-- FULL-SCREEN BACKGROUND LAYER -->
+  <div id="background-container">
+    <video
+      id="bg-video"
+      src="assets/background/scene 1.mp4"
+      autoplay
+      loop
+      muted
+      playsinline
+    ></video>
+  </div>
+
+  <!-- OVERLAY (CLOCK + CONTROLS) -->
+  <div id="overlay-container">
+    <!-- Header: Logo + Optional Quote -->
+    <header id="overlay-header">
+      <div class="logo">
+        Focus
+        <div class="logo-byline">by Jensen</div>
+      </div>
+      <div class="header-right">
+        <div class="greeting">"Stay in the moment"</div>
+      </div>
+    </header>
+
+    <!-- Center: Greeting + Clock -->
+    <main id="center-content">
+      <div id="greeting-line">Relax. Focus on what matters.</div>
+      <div id="clock" data-last-minute="">00:00</div>
+    </main>
+
+    <!-- Bottom: Controls (sound, background, volume, fullscreen) -->
+    <nav id="control-bar">
+      <!-- Sound Buttons -->
+      <button class="ctrl-btn" data-type="sound" data-sound="rain.mp3"><span class="icon">🌧️</span> Rain</button>
+      <button class="ctrl-btn" data-type="sound" data-sound="ocean.mp3"><span class="icon">🌊</span> Ocean</button>
+      <button class="ctrl-btn" data-type="sound" data-sound="piano.mp3"><span class="icon">🎹</span> Piano</button>
+      <button class="ctrl-btn" data-type="sound" data-sound="bird.mp3"><span class="icon">🐦</span> Birds</button>
+
+      <!-- Background Buttons -->
+      <button class="ctrl-btn" data-type="bg" data-bg="scene 1.mp4"><span class="icon">🌌</span> Scene 1</button>
+      <button class="ctrl-btn" data-type="bg" data-bg="scene 2.mp4"><span class="icon">🌊</span> Scene 2</button>
+      <button class="ctrl-btn" data-type="bg" data-bg="scene 3.mp4"><span class="icon">⚡</span> Scene 3</button>
+      <button class="ctrl-btn" data-type="bg" data-bg="scene 4.mp4"><span class="icon">🌄</span> Scene 4</button>
+      <button class="ctrl-btn" data-type="bg" data-bg="scene 5.mp4"><span class="icon">🌲</span> Scene 5</button>
+
+      <!-- Volume Slider -->
+      <input
+        type="range"
+        id="volumeSlider"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.3"
+        style="width: 60px;"
+      />
+
+      <!-- Fullscreen Toggle -->
+      <button id="fullscreenBtn">⛶</button>
+      
+      <!-- Time Format Toggle -->
+      <button id="timeFormatToggle" class="format-toggle" onclick="toggleTimeFormat()">24h</button>
+    </nav>
+  </div>
+
+  <!-- JavaScript Files -->
+  <script src="js/time-display.js?v=3.1"></script>
+  <script src="js/audioManager.js?v=2.1"></script>
+  <script src="js/bgManager.js?v=2.0"></script>
+  <script src="js/uiManager.js"></script>
+  
+  <!-- Autoplay initialization script -->
+  <script>
+    // Try to initialize audio as soon as possible
+    window.addEventListener('load', function() {
+      // Try to play a silent audio to unlock audio on iOS/Safari
+      const silentAudio = new Audio("data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA/+M4wAAAAAAAAAAAAEluZm8AAAAPAAAAAwAAAbAAYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBggICAgICAgICAgICAgICAgICAgICAgICAgICgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4OD///////////////8AAAAATGF2YzU4LjU0AAAAAAAAAAAAAAAAJAYBAAAAAAAAAbBT/QTlAAAAAAAAAAAAAAAAAAAAAP/jOMAAAAAAAAAAAABJbmZvAAAADwAAAAMAAAGwAGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYICAgICAgICAgICAgICAgICAgICAgICAgICgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4OD///////////////8AAAAATGF2YzU4LjU0AAAAAAAAAAAAAAAAJAYBAAAAAAAAAbBT/QTlAAAAAAAAAAAAAAAAAAAAAA==");
+      silentAudio.play().catch(e => console.log("Silent audio play failed, user interaction may be needed:", e));
+      
+      // Try to start the default sound
+      setTimeout(() => {
+        if (window.AudioManagerInstance) {
+          const savedSound = localStorage.getItem('selectedSound') || 'rain';
+          window.AudioManagerInstance.play(savedSound);
+        }
+      }, 500);
+    });
+  </script>
+</body>
+</html> 
